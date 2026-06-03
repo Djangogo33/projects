@@ -35,9 +35,9 @@ export function AppShell({ children, onCreateProject }: { children: ReactNode; o
       {/* Sidebar */}
       <aside className="hidden md:flex w-72 flex-col border-r border-border bg-surface/50 backdrop-blur-xl">
         <div className="flex items-center gap-3 px-6 py-6 border-b border-border">
-          <div className="relative w-9 h-9 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg shadow-primary/30">
-            <Sparkles className="w-5 h-5 text-primary-foreground" strokeWidth={2.5} />
-            <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-primary to-accent blur-md opacity-50 -z-10" />
+          <div className="relative w-9 h-9 rounded-lg flex items-center justify-center">
+            <img src={logoMark} alt="Nebula" className="w-9 h-9 object-contain" width={36} height={36} />
+            <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-primary to-accent blur-md opacity-30 -z-10" />
           </div>
           <div>
             <h1 className="text-base font-bold tracking-tight text-foreground">Nebula</h1>
