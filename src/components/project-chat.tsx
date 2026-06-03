@@ -155,9 +155,8 @@ function ChatInner({
     inputRef.current?.focus();
   }, [project.id, status]);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const text = input.trim();
+  const handleSubmit = (message: { text?: string }) => {
+    const text = (message.text ?? input).trim();
     if (!text || status === "streaming" || status === "submitted") return;
     sendMessage(
       { text },
