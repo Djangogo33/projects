@@ -12,6 +12,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@ai-sdk/openai-compatible": "^2.0.48",
     "@ai-sdk/react": "^3.0.195",
     "@fontsource/jetbrains-mono": "^5.2.8",
     "@fontsource/space-grotesk": "^5.2.10",
