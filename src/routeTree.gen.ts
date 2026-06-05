@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProjectsProjectIdRouteImport } from './routes/projects.$projectId'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
+import { Route as ApiPublicCronGithubSyncRouteImport } from './routes/api/public/cron/github-sync'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,35 +29,57 @@ const ApiChatRoute = ApiChatRouteImport.update({
   path: '/api/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicCronGithubSyncRoute = ApiPublicCronGithubSyncRouteImport.update({
+  id: '/api/public/cron/github-sync',
+  path: '/api/public/cron/github-sync',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/api/chat': typeof ApiChatRoute
   '/projects/$projectId': typeof ProjectsProjectIdRoute
+  '/api/public/cron/github-sync': typeof ApiPublicCronGithubSyncRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/api/chat': typeof ApiChatRoute
   '/projects/$projectId': typeof ProjectsProjectIdRoute
+  '/api/public/cron/github-sync': typeof ApiPublicCronGithubSyncRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/api/chat': typeof ApiChatRoute
   '/projects/$projectId': typeof ProjectsProjectIdRoute
+  '/api/public/cron/github-sync': typeof ApiPublicCronGithubSyncRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/chat' | '/projects/$projectId'
+  fullPaths:
+    | '/'
+    | '/api/chat'
+    | '/projects/$projectId'
+    | '/api/public/cron/github-sync'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/chat' | '/projects/$projectId'
-  id: '__root__' | '/' | '/api/chat' | '/projects/$projectId'
+  to:
+    | '/'
+    | '/api/chat'
+    | '/projects/$projectId'
+    | '/api/public/cron/github-sync'
+  id:
+    | '__root__'
+    | '/'
+    | '/api/chat'
+    | '/projects/$projectId'
+    | '/api/public/cron/github-sync'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ApiChatRoute: typeof ApiChatRoute
   ProjectsProjectIdRoute: typeof ProjectsProjectIdRoute
+  ApiPublicCronGithubSyncRoute: typeof ApiPublicCronGithubSyncRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +105,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiChatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/cron/github-sync': {
+      id: '/api/public/cron/github-sync'
+      path: '/api/public/cron/github-sync'
+      fullPath: '/api/public/cron/github-sync'
+      preLoaderRoute: typeof ApiPublicCronGithubSyncRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,7 +119,18 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApiChatRoute: ApiChatRoute,
   ProjectsProjectIdRoute: ProjectsProjectIdRoute,
+  ApiPublicCronGithubSyncRoute: ApiPublicCronGithubSyncRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
