@@ -72,7 +72,8 @@ export const parsePdfContent = createServerFn({ method: "POST" })
   }))
   .handler(async ({ data }): Promise<{ items: ImportPreview[]; warning?: string }> => {
     try {
-      const pdfParse = (await import("pdf-parse")).default as (
+      const mod = await import("pdf-parse");
+      const pdfParse = ((mod as unknown as { default?: unknown }).default ?? mod) as (
         b: Buffer | Uint8Array,
       ) => Promise<{ text: string; info?: { Title?: string } }>;
       const buf = Buffer.from(data.base64, "base64");

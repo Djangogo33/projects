@@ -1,11 +1,10 @@
-import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import type { Database } from "@/lib/db-types";
+import { createClient } from "@supabase/supabase-js";
 
 /**
  * Server-only Supabase client. Préfère la service_role si dispo (bypass RLS),
  * sinon retombe sur anon. À importer UNIQUEMENT depuis du code serveur.
  */
-export function getSupabaseAdmin(): SupabaseClient<Database> {
+export function getSupabaseAdmin() {
   const url = process.env.SUPABASE_URL ?? process.env.VITE_SUPABASE_URL;
   const key =
     process.env.SUPABASE_SERVICE_ROLE_KEY ??
@@ -16,7 +15,7 @@ export function getSupabaseAdmin(): SupabaseClient<Database> {
       "Supabase non configuré côté serveur (SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY manquant).",
     );
   }
-  return createClient<Database>(url, key, {
+  return createClient(url, key, {
     auth: { persistSession: false, autoRefreshToken: false },
   });
 }
