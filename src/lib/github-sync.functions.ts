@@ -30,8 +30,9 @@ async function runGithubSync(): Promise<GithubSyncSummary> {
     total = matching.length;
 
     // Récupère les projets GitHub existants
-    const { data: existing = [] } = await db
+    const { data: existingData } = await db
       .from("projects").select("id, source_id, hidden").eq("source", "github");
+    const existing = (existingData ?? []) as Array<{ id: string; source_id: string | null; hidden: boolean }>;
 
     const existingMap = new Map(existing.map((p) => [p.source_id, p]));
     const matchedSourceIds = new Set(matching.map((r) => String(r.id)));
